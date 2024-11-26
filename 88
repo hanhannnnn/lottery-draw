@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>固定抽籤池</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>抽籤池</h1>
+    <p>輸入你的名字以查看抽籤結果</p>
+    <input type="text" id="inputName" placeholder="請輸入名字">
+    <button onclick="checkResult()">查看結果</button>
+    <div id="result" class="result"></div>
+    <div id="error" class="error"></div>
+  </div>
+
+  <script>
+    // 預設參加者和抽籤結果
+    const participants = [
+      { name: "Alice", address: "123 Apple St." },
+      { name: "Bob", address: "456 Banana Ave." },
+      { name: "Charlie", address: "789 Cherry Blvd." },
+      { name: "Diana", address: "101 Date Ln." },
+      { name: "Eve", address: "202 Elderberry Way" }
+    ];
+
+    // 固定的抽籤結果（保證不抽到自己）
+    const fixedResults = {
+      "Alice": { name: "Bob", address: "456 Banana Ave." },
+      "Bob": { name: "Charlie", address: "789 Cherry Blvd." },
+      "Charlie": { name: "Diana", address: "101 Date Ln." },
+      "Diana": { name: "Eve", address: "202 Elderberry Way" },
+      "Eve": { name: "Alice", address: "123 Apple St." }
+    };
+
+    function checkResult() {
+      const inputName = document.getElementById("inputName").value.trim();
+      const resultDiv = document.getElementById("result");
+      const errorDiv = document.getElementById("error");
+
+      // 清空結果和錯誤訊息
+      resultDiv.textContent = "";
+      errorDiv.textContent = "";
+
+      if (!inputName) {
+        errorDiv.textContent = "請輸入你的名字！";
+        return;
+      }
+
+      if (fixedResults[inputName]) {
+        const drawn = fixedResults[inputName];
+        resultDiv.textContent = `你抽到的是：${drawn.name}, 地址：${drawn.address}`;
+      } else {
+        errorDiv.textContent = "名字無效或不在參加者名單內！";
+      }
+    }
+  </script>
+</body>
+</html>
